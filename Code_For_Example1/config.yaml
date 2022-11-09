@@ -1,0 +1,19 @@
+# for solver
+iter_times: 20
+threads: 16
+start_frame_for_random: 4
+divide_size: 4
+
+# for main.cpp
+path: ../generated_data/time_phi_x.txt
+cost_path: ../generated_data/cost.txt
+save_mea_path: ../generated_data/data_mea.txt
+save_gt_path: ../generated_data/gt/data_gt.txt
+get_txt_path: ../Example.txt
+
+# for main_submap.cpp
+read_submap_datapath: ../data/
+save_submap_datapath: ../data/
+
+step_size: 4
+gama: 5000
