@@ -569,12 +569,23 @@ std::map<int, double> Optimizer::solve()
             for (auto &cp : cpsts)
             {
                 std::map<int, double> phis;
-                for (size_t i = 0; i < cp.a1.size(); i++)
+                if (k == iterations - 1)
                 {
-                    double aa = (cp.a1[i] + cp.a2[i]) / 2.;
-                    phis[i + 1] = aa;
+                    for (size_t i = 0; i < cp.a1.size(); i++)
+                    {
+                        double aa = (cp.a1[i] + cp.a2[i]) / 2.;
+                        phis[i + 1] = aa;
+                    }
+                    phis[0] = 0;
                 }
-                phis[0] = 0;
+                else
+                {
+                    for (size_t i = 0; i < cp.a1.size(); i++)
+                    {
+                        double aa = (cp.a1[i] + cp.a2[i]) / 2.;
+                        phis[i] = aa;
+                    }
+                }
                 cp.cost = ObjFunc(phis);
             }
             comparestruct &cp = *min_element(cpsts.begin(), cpsts.end(), compare1);
@@ -609,11 +620,10 @@ std::map<int, double> Optimizer::solve()
             time_range << std::endl;
             time_range.close();
             std::map<int, double> phis;
-            phis[0] = (cp.a1[0] + cp.a2[0]) / 2.;
-            phis[1] = (cp.a1[1] + cp.a2[1]) / 2.;
-            phis[2] = (cp.a1[2] + cp.a2[2]) / 2.;
-            phis[3] = (cp.a1[3] + cp.a2[3]) / 2.;
-            phis[4] = (cp.a1[4] + cp.a2[4]) / 2.;
+            for (size_t i = 0; i < cp.a1.size(); i++)
+            {
+                phis[i]= (cp.a1[i] + cp.a2[i]) / 2.;
+            }
             true_range.open(x_dir.c_str(), std::ios::app);
             true_range << ComputeX(phis) << std::endl
                        << std::endl;

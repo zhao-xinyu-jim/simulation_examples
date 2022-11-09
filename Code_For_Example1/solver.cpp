@@ -181,7 +181,7 @@ void Solver::ComputeBound1(comparestruct &phis, int divide_size)
     iter1(0, data, temp, results);
     double max = DBL_MIN, min = DBL_MAX, mid;
     std::vector<double> values;
-    for (int t = 0; t < results.size(); t++)
+    for (size_t t = 0; t < results.size(); t++)
     {
         auto &result = results[t];
         double current = c1_;
@@ -488,6 +488,7 @@ std::vector<double> Solver::solve(int iters)
     int start_random = config_node["start_frame_for_random"].as<int>();
     int threads_num = config_node["threads"].as<int>();
     int divide_size = config_node["divide_size"].as<int>();
+    double eps = config_node["eps"].as<double>();
     std::string save_time_path = config_node["path"].as<std::string>();
     std::string save_cost_path = config_node["cost_path"].as<std::string>();
 
@@ -511,7 +512,7 @@ std::vector<double> Solver::solve(int iters)
 #pragma omp parallel
             {
 #pragma omp for
-                for (int i = 0; i < cpsts.size(); i++)
+                for (size_t i = 0; i < cpsts.size(); i++)
                 {
                     auto &cp = cpsts[i];
                     cp.a1.emplace_front(0);
@@ -529,12 +530,23 @@ std::vector<double> Solver::solve(int iters)
             if (k >= start_random)
                 std::cout << std::endl;
         }
-        else
+
+        bool if_end = false;
+        comparestruct &min_cp = *min_element(cpsts.begin(), cpsts.end(), compare2);
+        double min_max = min_cp.upper_bound;
+        double min_min = min_cp.lower_bound;
+        if (min_max - min_min < eps)
+        {
+            if_end = true;
+        }
+
+        if (k == iters - 1 || if_end)
         {
             for (auto &cp : cpsts)
             {
                 std::vector<double> phis;
-                phis.push_back(0);
+                if (k == iters - 1)
+                    phis.push_back(0);
                 for (size_t i = 0; i < cp.a1.size(); i++)
                 {
                     double aa = (cp.a1[i] + cp.a2[i]) / 2.;
@@ -545,7 +557,8 @@ std::vector<double> Solver::solve(int iters)
             comparestruct &cp = *min_element(cpsts.begin(), cpsts.end(), compare4);
             std::cout << "final_cost: " << cp.cost << std::endl;
             std::vector<double> phis;
-            phis.push_back(0);
+            if (k == iters - 1)
+                phis.push_back(0);
             for (size_t i = 0; i < cp.a1.size(); i++)
             {
                 double aa = (cp.a1[i] + cp.a2[i]) / 2.;
@@ -568,9 +581,6 @@ std::vector<double> Solver::solve(int iters)
 
         int count_add = 0;
         int count_earse = 0;
-        comparestruct &min_cp = *min_element(cpsts.begin(), cpsts.end(), compare2);
-        double min_max = min_cp.upper_bound;
-        double min_min = min_cp.lower_bound;
 
         std::vector<comparestruct>().swap(temp_cpsts);
         std::cout << "min_max:" << min_max << std::endl;

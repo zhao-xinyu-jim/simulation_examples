@@ -26,7 +26,6 @@ int main(int argc, char **argv)
 {
     YAML::Node config_node = YAML::LoadFile("../config.yaml");
     int iter_times = config_node["iter_times"].as<int>();
-    int step_size = config_node["step_size"].as<int>();
     double gama = config_node["gama"].as<double>();
     std::string save_time_path = config_node["path"].as<std::string>();
     std::string save_mea_path = config_node["save_mea_path"].as<std::string>();
@@ -36,7 +35,7 @@ int main(int argc, char **argv)
     std::shared_ptr<FeatureFrameManager> fm = std::make_shared<FeatureFrameManager>();
     fm->GenDataFromTXT(get_txt_path, true);
     fm->SaveGroundtruth(save_gt_path);
-    fm->SaveMeasurement(save_mea_path, i * 5);
+    fm->SaveMeasurement(save_mea_path);
 
     if (fm->GetFeatureSize() == 0 || fm->GetFrameSize() == 0)
     {
@@ -51,7 +50,8 @@ int main(int argc, char **argv)
     std::map<uint, Eigen::MatrixXd> Ai;
     std::map<uint, Eigen::VectorXd> Zi;
     fm->ComputeParams(A, Z_xy, Z_ori, C, Ai, Zi);
-
+    int feature_size = fm->GetFeatureSize();
+    int pose_size = fm->GetFrameSize();
     std::shared_ptr<Solver> solver_ptr = std::make_shared<Solver>(feature_size, pose_size);
     solver_ptr->SetA(A);
     solver_ptr->SetAi(Ai);

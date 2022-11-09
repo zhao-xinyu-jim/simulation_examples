@@ -5,18 +5,18 @@ inf_th: 1 # Noise covariance theta
 threads: 16 # Number of CPU threads used
 start_frame_for_random: 4
 divide_size: 4
-eps: 0.000001
+eps: 0.000001 # Iteration termination condition (upper_bound - lower_bound < eps)
 
-save_mea_as_G2O_path: ../data/temp/ # Save points and edges to G2O format
-save_results_path: ../data/f_bound/ # path to save results
+save_mea_as_G2O_path: ../data1/temp/ # Save points and edges to G2O format
+save_results_path: ../data1/f_bound/ # path to save results
 
 use_runtime_as_seed: true
 
-step: 4
-x: [10, 200, 100, 0]
+step: 4 # 4-step pose graph
+x: [100, 200, 100, 0]
 y: [0, 50, 100, 50]
 theta: [1.2, 2.5, -2.5, -1.2]
-# AddPose(10,0,1.2) AddPose(200,50,2.5) .........................
+# AddPose(100,0,1.2) AddPose(200,50,2.5) .........................
 
 edge_size: 7
 edge_from: [0, 1, 2, 3, 4, 0, 4]

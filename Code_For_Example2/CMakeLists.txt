@@ -33,6 +33,3 @@ list(APPEND ALL_TARGET_LIBRARIES OpenMP::OpenMP_CXX)
 
 add_executable(main main.cpp pose_data_gen.cpp pose_node.cpp optimizer.cpp) # optimizer.cpp data_generator.cpp solver.cpp
 target_link_libraries(main ${ALL_TARGET_LIBRARIES})
-
-# add_executable(readsetxt readsetxt.cpp pose_node.cpp optimizer.cpp) # optimizer.cpp data_generator.cpp solver.cpp
-# target_link_libraries(readsetxt ${ALL_TARGET_LIBRARIES})

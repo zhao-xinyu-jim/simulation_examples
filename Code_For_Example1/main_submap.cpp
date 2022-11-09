@@ -27,18 +27,19 @@ int main(int argc, char **argv)
     YAML::Node config_node = YAML::LoadFile("../config.yaml");
     int iter_times = config_node["iter_times"].as<int>();
     int step_size = config_node["step_size"].as<int>();
+    int pose_size = config_node["pose_size"].as<int>();
     double gama = config_node["gama"].as<double>();
     std::string read_submap_datapath = config_node["read_submap_datapath"].as<std::string>();
     std::string save_submap_datapath = config_node["save_submap_datapath"].as<std::string>();
     std::string save_path = save_submap_datapath + std::to_string(step_size) + "step";
 
-    size_t end = 5;
+    size_t end = pose_size;
     for (size_t count = 1; count < end + 1; count--)
     {
         times++;
         std::shared_ptr<FeatureFrameManager> fm = std::make_shared<FeatureFrameManager>();
 
-        for (size_t i = 0; i < step_size + 1; i++)
+        for (int i = 0; i < step_size + 1; i++)
         {
             if (count > end)
                 break;
@@ -48,12 +49,13 @@ int main(int argc, char **argv)
             fm->GetDataFromTXT(path, i);
             count++;
         }
-        auto feas = fm->GetFeaturesId();
-        auto fras = fm->GetFramesId();
-        if (fm->GetFrameSize() == 0 || fm->GetFeatureSize() == 0)
+        if (fm->GetFrameSize() <= 1 || fm->GetFeatureSize() <= 1)
         {
             break;
         }
+        auto feas = fm->GetFeaturesId();
+        auto fras = fm->GetFramesId();
+        
 
         Eigen::MatrixXd A;
         Eigen::VectorXd Z_xy;

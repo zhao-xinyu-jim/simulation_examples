@@ -20,6 +20,7 @@ void FeatureFrameManager::GetDataFromTXT(std::string path, uint frame_id)
     f.open(path, std::ios::in);
     if (!f.is_open())
     {
+        std::cout << path + "does not exist!" << std::endl;
         return;
     }
     std::string line;
@@ -61,6 +62,7 @@ void FeatureFrameManager::GetDataFromTXT(std::string path, uint frame_id)
         }
     }
     f.close();
+    std::cout << path << " " << frame_id << std::endl;
 }
 void FeatureFrameManager::GenDataFromTXT(std::string path, bool add_noise)
 {
@@ -195,7 +197,7 @@ void FeatureFrameManager::SaveGroundtruth(std::string path)
 {
     if (features_gt_.size() == 0 || frames_gt_.size() == 0)
         return;
-    std::fstream fs(path, std::ios::out);
+    std::fstream fs(path, std::ios::app);
     for (auto &fea_gt : features_gt_)
     {
         int index = fea_gt.first;
@@ -214,6 +216,8 @@ void FeatureFrameManager::SaveGroundtruth(std::string path)
             fs << pos_xy.z() << " " << 1 << " " << index << std::endl;
         }
     }
+    fs << std::endl;
+    fs.close();
 }
 void FeatureFrameManager::SaveMeasurement(std::string path, int bias)
 {
@@ -239,6 +243,8 @@ void FeatureFrameManager::SaveMeasurement(std::string path, int bias)
             fs << odom.z() << " " << 1 << " " << pose_index + bias + 1 << " " << pose_index + bias << std::endl;
         }
     }
+    fs << std::endl;
+    fs.close();
 }
 int FeatureFrameManager::GetFeatureSize()
 {

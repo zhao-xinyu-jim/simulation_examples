@@ -1,19 +1,35 @@
 # for solver
-iter_times: 20
-threads: 16
+iter_times: 25 # max iteration times
+threads: 16 # Number of CPU threads used
 start_frame_for_random: 4
 divide_size: 4
+eps: 0.000001 # Iteration termination condition (upper_bound - lower_bound < eps)
+gama: 5000
 
 # for main.cpp
-path: ../generated_data/time_phi_x.txt
-cost_path: ../generated_data/cost.txt
-save_mea_path: ../generated_data/data_mea.txt
-save_gt_path: ../generated_data/gt/data_gt.txt
-get_txt_path: ../Example.txt
+path: ../generated_data/time_phi_x.txt # path to save results
+cost_path: ../generated_data/cost.txt # path to save results
+save_mea_path: ../generated_data/data_mea.txt # path to save results
+save_gt_path: ../generated_data/gt/data_gt.txt # path to save groundtruth
+get_txt_path: ../Example.txt # path to read features & poses generation file
+# format for "../Example.txt"
+# 1               number of features
+# 5               number of poses
+# 0.5 0.5 0.1     noise variances of feature measurement, odomtry_xy, odomtry_theta
+# 25  -25         ground truth of feature_0 (x, y)
+# 0 0 0           ground truth of pose_0 (x, y, theta)
+# 10 0 0          ground truth of pose_1
+# 20 0 0          ground truth of pose_2
+# 30 0 0          ground truth of pose_3
+# 40 0 0          ground truth of pose_4
+# 1 0             number of observed features of pose_0, feature id0, (feature id1,.......)
+# 1 0             number of observed features of pose_1, feature id0, (feature id1,.......)
+# 1 0             number of observed features of pose_2, feature id0, (feature id1,.......)
+# 1 0             number of observed features of pose_3, feature id0, (feature id1,.......)
+# 1 0             number of observed features of pose_4, feature id0, (feature id1,.......)
 
 # for main_submap.cpp
-read_submap_datapath: ../data/
-save_submap_datapath: ../data/
-
-step_size: 4
-gama: 5000
+read_submap_datapath: ../data/ # path to read odomtry and feature measurements
+save_submap_datapath: ../submaps/ # path to save submap results
+pose_size: 200 # 200 poses in "read_submap_datapath"
+step_size: 4 # 4-step pose graph

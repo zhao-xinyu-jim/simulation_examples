@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(main)
+project(Example2)
 
 SET(CMAKE_BUILD_TYPE "Release")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall -pthread")
@@ -36,4 +36,4 @@ add_executable(main main.cpp solver.cpp feature_node.cpp)#optimizer.cpp
 target_link_libraries(main ${ALL_TARGET_LIBRARIES})
 
 add_executable(main_submap main_submap.cpp solver.cpp feature_node.cpp)#optimizer.cpp
-target_link_libraries(main ${ALL_TARGET_LIBRARIES})
+target_link_libraries(main_submap ${ALL_TARGET_LIBRARIES})
