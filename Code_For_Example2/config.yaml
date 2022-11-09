@@ -7,8 +7,8 @@ start_frame_for_random: 4
 divide_size: 4
 eps: 0.000001 # Iteration termination condition (upper_bound - lower_bound < eps)
 
-save_mea_as_G2O_path: ../data1/temp/ # Save points and edges to G2O format
-save_results_path: ../data1/f_bound/ # path to save results
+save_mea_as_G2O_path: ../data/temp/ # Save points and edges to G2O format
+save_results_path: ../data/f_bound/ # path to save results
 
 use_runtime_as_seed: true
 
